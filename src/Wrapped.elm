@@ -26,6 +26,18 @@ module Wrapped exposing
     , liftW2
     , map
     , wrap
+    , wrapLift
+    , wrapLift2
+    , wrapLift3
+    , pred
+    , succ
+    , mult
+    , plus
+    , minus
+    , pow
+    , divF
+    , divI
+    , append
     )
 
 import Array exposing (Array)
@@ -150,6 +162,15 @@ liftW2 : (a -> b -> c) -> WrappedReadable a phantom1 access2 -> WrappedReadable 
 liftW2 f (Wrapped w) (Wrapped v) =
     Wrapped (f w v)
 
+wrapLift : (WrappedWritable x p a -> b) -> x -> b
+wrapLift f x = f (Wrapped x)
+
+wrapLift2 : (WrappedWritable x p1 a2 -> WrappedWritable y p2 a2 -> b) -> x -> y -> b
+wrapLift2 f x y = f (Wrapped x) (Wrapped y)
+
+
+wrapLift3 : (WrappedWritable x p1 a2 -> WrappedWritable y p2 a2 -> WrappedWritable z p3 a3 -> b) -> x -> y -> z -> b
+wrapLift3 f x y z = f (Wrapped x) (Wrapped y) (Wrapped z)
 
 map : (a -> b) -> WrappedReadable a phantom access -> WrappedWritable b phantom access
 map f (Wrapped w) =
@@ -157,3 +178,48 @@ map f (Wrapped w) =
 
 coerce : TokenWrapped token a phantom2 access -> TokenWrapped token a phantom2 access
 coerce (Wrapped a) = Wrapped a
+
+pred : Wrapped number phantom access -> Wrapped number phantom access
+pred (Wrapped a) = Wrapped (a - 1)
+
+succ : Wrapped number phantom access -> Wrapped number phantom access
+succ (Wrapped a) = Wrapped (a + 1)
+
+mult : Wrapped number phantom access -> Wrapped number phantom access -> Wrapped number phantom access
+mult (Wrapped a) (Wrapped b) = Wrapped (a * b)
+
+plus : Wrapped number phantom access -> Wrapped number phantom access -> Wrapped number phantom access
+plus (Wrapped a) (Wrapped b) = Wrapped (a + b)
+
+minus : Wrapped number phantom access -> Wrapped number phantom access -> Wrapped number phantom access
+minus (Wrapped a) (Wrapped b) = Wrapped (a - b)
+
+pow : Wrapped number phantom access -> Wrapped number phantom access -> Wrapped number phantom access
+pow (Wrapped a) (Wrapped b) = Wrapped (a ^ b)
+
+divF : Wrapped Float phantom access -> Wrapped Float phantom access -> Wrapped Float phantom access
+divF (Wrapped a) (Wrapped b) = Wrapped (a / b)
+
+divI : Wrapped Int phantom access -> Wrapped Int phantom access -> Wrapped Int phantom access
+divI (Wrapped a) (Wrapped b) = Wrapped (a // b)
+
+append : Wrapped appendable phantom access -> Wrapped appendable phantom access -> Wrapped appendable phantom access
+append (Wrapped a) (Wrapped b) = Wrapped (a ++ b)
+
+lt : Wrapped comparable phantom access -> Wrapped comparable phantom access -> Bool
+lt (Wrapped a) (Wrapped b) = a < b
+
+gt : Wrapped comparable phantom access -> Wrapped comparable phantom access -> Bool
+gt (Wrapped a) (Wrapped b) = a > b
+
+lte : Wrapped comparable phantom access -> Wrapped comparable phantom access -> Bool
+lte (Wrapped a) (Wrapped b) = a <= b
+
+gte : Wrapped comparable phantom access -> Wrapped comparable phantom access -> Bool
+gte (Wrapped a) (Wrapped b) = a >= b
+
+eq : Wrapped comparable phantom access -> Wrapped comparable phantom access -> Bool
+eq (Wrapped a) (Wrapped b) = a == b
+
+ne : Wrapped comparable phantom access -> Wrapped comparable phantom access -> Bool
+ne (Wrapped a) (Wrapped b) = a /= b
