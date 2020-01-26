@@ -1,0 +1,18 @@
+{
+    "type": "package",
+    "exposed-modules": [
+        "Wrapped"
+    ],
+    "version": "0.1.0",
+    "license": "MIT",
+    "name": "de-passage/wrapped",
+    "summary": "Generic strong type library",
+    "source-directories": [
+        "src"
+    ],
+    "elm-version": "0.19.0 <= v < 0.20.0",
+    "dependencies": {
+        "elm/core": "1.0.0 <= v < 2.0.0"
+    },
+    "test-dependencies": {}
+}
